@@ -120,9 +120,8 @@ class ETL:
         '''
         writers = {}
         # Using DISTINCT to delete duplicates
-        for writer in self.conn.execute('''SELECT DISTINCT id,
-                                        name FROM writers'''
-                                        ):
+        query = 'SELECT DISTINCT id, name FROM writers'
+        for writer in self.conn.execute(query):
             writers[writer['id']] = writer
         return writers
 
@@ -193,3 +192,13 @@ class ETL:
             records.append(transformed_row)
 
         self.es_loader.load_to_es(records, index_name)
+
+
+def main():
+    # Creating DB connection
+    with conn_context('db.sqlite') as conn:
+        ETL(conn, ESLoader('http://127.0.0.1:9200')).load('movies')
+
+
+if __name__ == "__main__":
+    main()

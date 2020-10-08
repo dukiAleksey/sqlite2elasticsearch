@@ -20,6 +20,7 @@ Check status `curl http://127.0.0.1:9200`
 ```bash
 virtualenv env
 source env/bin/activate
+pip install -r requirements.txt
 ```
 
 ## Create ES index
